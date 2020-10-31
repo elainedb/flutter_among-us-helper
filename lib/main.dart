@@ -1,3 +1,4 @@
+import 'package:adaptive_components/adaptive_components.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -8,58 +9,77 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: Column(
+        children: [
+          AdaptiveContainer(
+            constraints: AdaptiveConstraints(
+              xsmall: true,
+              small: true,
+              medium: false,
+              large: false,
+              xlarge: false,
+            ),
+            child: MainLayout(2),
+          ),
+          AdaptiveContainer(
+            constraints: AdaptiveConstraints(
+              xsmall: false,
+              small: false,
+              medium: true,
+              large: true,
+              xlarge: true,
+            ),
+            child: MainLayout(4),
+          ),
+        ],
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class MainLayout extends StatelessWidget {
+  final colsNumber;
 
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  MainLayout(this.colsNumber);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+    var size = MediaQuery.of(context).size;
+    final double itemHeight = (size.height /*- kToolbarHeight - 24*/) / (12/colsNumber);
+    final double itemWidth = size.width / colsNumber;
+
+    return GridView.count(
+      shrinkWrap: true,
+      childAspectRatio: (itemWidth / itemHeight),
+      physics: new NeverScrollableScrollPhysics(),
+      crossAxisCount: colsNumber,
+      children: <Widget>[
+        GridItem(Colors.red),
+        GridItem(Colors.indigoAccent),
+        GridItem(Colors.green),
+        GridItem(Colors.pinkAccent),
+        GridItem(Colors.orange),
+        GridItem(Colors.yellow),
+        GridItem(Colors.black),
+        GridItem(Colors.white),
+        GridItem(Colors.deepPurpleAccent),
+        GridItem(Colors.brown),
+        GridItem(Colors.cyanAccent),
+        GridItem(Colors.lightGreenAccent),
+      ],
+    );
+  }
+}
+
+class GridItem extends StatelessWidget {
+  final color;
+
+  GridItem(this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: color,
     );
   }
 }

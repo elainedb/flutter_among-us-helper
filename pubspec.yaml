@@ -21,6 +21,10 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  adaptive_components:
+    git:
+      url: git://github.com/material-components/material-components-flutter-adaptive.git
+      path: adaptive_components
   flutter:
     sdk: flutter
 
